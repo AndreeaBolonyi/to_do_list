@@ -30,14 +30,6 @@ class TasksRepository {
     ]));
 
     initTasks();
-
-    _tasks.listen((value) {
-      log("tasks repo: listen method start");
-      for(Task task in value) {
-        log(task.toString());
-      }
-      log("tasks repo: listen method end");
-    });
   }
 
   Stream<List<Task>> get tasksForCurrentUser => _tasks;
@@ -74,7 +66,7 @@ class TasksRepository {
 
     if (nextId != -1) {
       task.id = nextId;
-      _tasks.stream.value.add(task);
+      _tasks.sink.add([ ... _tasks.value, task]);
       log("tasksRepo: tasks after add: ${_tasks.stream.value}");
       return true;
     }
@@ -82,7 +74,7 @@ class TasksRepository {
     return false;
   }
 
-  bool update(Task task) {
+  void update(Task task) {
     String errors = validateTask(task);
     if (errors != "") {
       log("tasksRepo update errors: $errors");
@@ -91,18 +83,8 @@ class TasksRepository {
 
     Utils.selectedTask =
         Task(0, "", MyDate(1, 1, 2021), MyDate(1, 1, 2021), 0, []);
-    for (Task t in _tasks.stream.value) {
-      if (t.id == task.id) {
-        t.created = task.created;
-        t.deadline = task.deadline;
-        t.priority = task.priority;
-        t.title = task.title;
-        t.users = task.users;
-        return true;
-      }
-    }
-
-    return false;
+    _tasks.value[_tasks.value.indexWhere((t) => t.id == task.id)] = task;
+    _tasks.sink.add([... _tasks.value]);
   }
 
   bool delete(int taskId) {
@@ -113,7 +95,8 @@ class TasksRepository {
 
     for (Task t in _tasks.value) {
       if (t.id == taskId) {
-        _tasks.value.remove(t);
+        List<Task> newTasks = _tasks.value.where((task) => task.id != taskId).toList();
+        _tasks.sink.add(newTasks);
         log("tasksRepo: tasks after delete: ${_tasks.stream.value.length}");
         return true;
       }
