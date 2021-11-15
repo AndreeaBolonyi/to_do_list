@@ -69,13 +69,13 @@ class TasksRepository {
       throw Exception(errors);
     }
 
-    log("tasksRepo: tasks size before add: ${_tasks.stream.value}");
+    log("tasksRepo: tasks before add: ${_tasks.stream.value}");
     int nextId = getNextId();
 
     if (nextId != -1) {
       task.id = nextId;
       _tasks.stream.value.add(task);
-      log("tasksRepo: tasks size after add: ${_tasks.stream.value}");
+      log("tasksRepo: tasks after add: ${_tasks.stream.value}");
       return true;
     }
 
@@ -108,13 +108,13 @@ class TasksRepository {
   bool delete(int taskId) {
     Utils.selectedTask =
         Task(0, "", MyDate(1, 1, 2021), MyDate(1, 1, 2021), 0, []);
-    log("tasksRepo: tasks size before delete: ${_tasks.stream.value.length}");
+    log("tasksRepo: tasks before delete: ${_tasks.stream.value.length}");
     log("tasksRepo: task id to delete -> $taskId");
 
     for (Task t in _tasks.value) {
       if (t.id == taskId) {
         _tasks.value.remove(t);
-        log("tasksRepo: tasks size after delete: ${_tasks.stream.value.length}");
+        log("tasksRepo: tasks after delete: ${_tasks.stream.value.length}");
         return true;
       }
     }

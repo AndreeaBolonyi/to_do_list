@@ -32,8 +32,8 @@ class _MainScreenState extends State<MainScreenWidget> {
 
   void handleAdd() {
     Utils.selectedTask = Task(0,"",MyDate(1,1,2021),MyDate(1,1,2021),0,[]);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const TasksDetailsAddUpdateWidget()));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const TasksDetailsAddUpdateWidget()));
   }
 
   void handleUpdate() {
@@ -48,8 +48,8 @@ class _MainScreenState extends State<MainScreenWidget> {
       return;
     }
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const TasksDetailsAddUpdateWidget()));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const TasksDetailsAddUpdateWidget()));
   }
 
   void handleDelete() {
@@ -64,8 +64,8 @@ class _MainScreenState extends State<MainScreenWidget> {
       return;
     }
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const TasksDetailsDeleteWidget()));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => const TasksDetailsDeleteWidget()));
   }
 
   @override
@@ -143,11 +143,10 @@ class _MainScreenState extends State<MainScreenWidget> {
                           }
 
                           final tasks = response.data;
-                          log("main page: size for tasks: ${tasks!.length}");
 
                           return ListView.builder(
                               scrollDirection: Axis.vertical,
-                              itemCount: tasks.length,
+                              itemCount: tasks!.length,
                               itemBuilder: (context, index) {
                                 return ListTile(
                                   title: getTitle(tasks[index]),

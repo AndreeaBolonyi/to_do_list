@@ -192,7 +192,7 @@ class _TasksDetailsAddUpdateState extends State<TasksDetailsAddUpdateWidget> {
     Utils.selectedTask = Task(0,"",MyDate(1,1,2021),MyDate(1,1,2021),0,[]);
     Navigator.of(context).pop(); Navigator.of(context).pop();
     Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const MainScreenWidget()));
+         context, MaterialPageRoute(builder: (_) => const MainScreenWidget()));
   }
 
   @override
